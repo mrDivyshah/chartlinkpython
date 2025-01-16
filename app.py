@@ -5,6 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from PIL import Image as PILImage
 from reportlab.pdfgen import canvas
@@ -20,13 +21,17 @@ app = Flask(__name__)
 
 # Helper function to set up the web driver
 def web_driver():
-    options = webdriver.ChromeOptions()
-    options.add_argument("--no-sandbox")
+    options = Options()
     options.add_argument("--headless")
+    options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
-    options.add_argument('--disable-gpu')
-    options.add_argument('user-agent=Mozilla/5.0')
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    options.add_argument("--disable-gpu")
+    options.add_argument("--disable-setuid-sandbox")
+    options.binary_location = "/usr/bin/chromium"  # Use Chromium installed via render-build.sh
+
+    # Specify the path to the Chromedriver binary
+    service = Service("/usr/bin/chromedriver")
+    driver = webdriver.Chrome(service=service, options=options)
     return driver
 
 # Function to scrape URLs from the screener page
