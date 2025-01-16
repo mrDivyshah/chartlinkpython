@@ -4,6 +4,10 @@ from bs4 import BeautifulSoup
 
 app = Flask(__name__)
 
+@app.route('/')
+def home():
+    return "Welcome to the Scraper API! Available routes: /scrape"
+
 @app.route('/scrape', methods=['GET'])
 def scrape_data():
     url = 'https://chartink.com/screener/copy-idea-krishchess-combo-mbsanghavi'
