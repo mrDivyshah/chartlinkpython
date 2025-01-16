@@ -15,18 +15,20 @@ import base64
 import time
 import os
 from io import BytesIO
+import chromedriver_autoinstaller
 
 app = Flask(__name__)
 
 # Helper function to set up the web driver
 def web_driver():
+    chromedriver_autoinstaller.install()
     options = webdriver.ChromeOptions()
     options.add_argument("--no-sandbox")
     options.add_argument("--headless")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument('--disable-gpu')
     options.add_argument('user-agent=Mozilla/5.0')
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    driver = webdriver.Chrome( options=options)
     return driver
 
 # Function to scrape URLs from the screener page
