@@ -134,35 +134,36 @@ def scrape():
         results = get_urls_and_indices(driver)
         driver.quit()
 
-        output_pdf = "screener_images.pdf"
-        c = canvas.Canvas(output_pdf, pagesize=A4)
-        a4_width, a4_height = A4
+        # output_pdf = "screener_images.pdf"
+        # c = canvas.Canvas(output_pdf, pagesize=A4)
+        # a4_width, a4_height = A4
 
-        with ThreadPoolExecutor(max_workers=10) as executor:
-            futures = [executor.submit(process_link, url, timeframe, s_range) for url in results]
+        # with ThreadPoolExecutor(max_workers=10) as executor:
+        #     futures = [executor.submit(process_link, url, timeframe, s_range) for url in results]
 
-            for future in as_completed(futures):
-                company_name, image = future.result()
-                if company_name and image:
-                    temp_image_path = "temp_image.png"
-                    image.save(temp_image_path)
+        #     for future in as_completed(futures):
+        #         company_name, image = future.result()
+        #         if company_name and image:
+        #             temp_image_path = "temp_image.png"
+        #             image.save(temp_image_path)
 
-                    image_ratio = image.width / image.height
-                    a4_ratio = a4_width / a4_height
-                    if image_ratio > a4_ratio:
-                        scaled_width = a4_width
-                        scaled_height = a4_width / image_ratio
-                    else:
-                        scaled_height = a4_height
-                        scaled_width = a4_height * image_ratio
+        #             image_ratio = image.width / image.height
+        #             a4_ratio = a4_width / a4_height
+        #             if image_ratio > a4_ratio:
+        #                 scaled_width = a4_width
+        #                 scaled_height = a4_width / image_ratio
+        #             else:
+        #                 scaled_height = a4_height
+        #                 scaled_width = a4_height * image_ratio
 
-                    c.setPageSize((a4_width, scaled_height + 40))
-                    c.drawCentredString(a4_width / 2, scaled_height + 30, company_name)
-                    c.drawImage(temp_image_path, (a4_width - scaled_width) / 2, 20, width=scaled_width, height=scaled_height)
-                    c.showPage()
+        #             c.setPageSize((a4_width, scaled_height + 40))
+        #             c.drawCentredString(a4_width / 2, scaled_height + 30, company_name)
+        #             c.drawImage(temp_image_path, (a4_width - scaled_width) / 2, 20, width=scaled_width, height=scaled_height)
+        #             c.showPage()
 
-        c.save()
-        return send_file(output_pdf, as_attachment=True)
+        # c.save()
+        # return send_file(output_pdf, as_attachment=True)
+        return jsonify(results)
 
     except Exception as e:
         return jsonify({"error": str(e)})
