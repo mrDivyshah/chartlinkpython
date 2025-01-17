@@ -2,6 +2,7 @@ from flask import Flask, jsonify
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
 
 app = Flask(__name__)
 
@@ -18,7 +19,7 @@ def check_chromedriver():
         options.add_argument("--disable-dev-shm-usage")
         
         # Set up driver
-        driver = webdriver.Chrome(service=Service(chromedriver_path), options=options)
+        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
         
         # Test the driver by opening a simple URL
         driver.get("https://www.google.com")
