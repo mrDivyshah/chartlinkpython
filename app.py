@@ -175,4 +175,8 @@ def scrape():
 
 # Start the Flask app
 if __name__ == '__main__':
+    from subprocess import run
+    print("Checking Chromium and Chromedriver versions...")
+    run(["chromium", "--version"])
+    run(["chromedriver", "--version"])
     app.run(debug=True)
