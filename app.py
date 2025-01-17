@@ -11,12 +11,15 @@ def web_driver():
 
     # Chrome options
     options = webdriver.ChromeOptions()
-    options.binary_location = chrome_binary_path  # Add this line
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--headless")  # Ensure headless mode for Render
+    options.binary_location = chrome_binary_path
+    options.add_argument("--no-sandbox")  # Required in headless environments
+    options.add_argument("--disable-dev-shm-usage")  # Avoid shared memory issues
+    options.add_argument("--headless")  # Run Chrome in headless mode
+    options.add_argument("--disable-gpu")  # Disable GPU to avoid rendering issues
+    options.add_argument("--window-size=1920,1080")  # Set a default window size
+    options.add_argument("--disable-extensions")  # Disable unnecessary extensions
+    options.add_argument("--remote-debugging-port=9222")  # For debugging
 
-    # Setup WebDriver with Service
     driver = webdriver.Chrome(
         service=Service(ChromeDriverManager().install()),
         options=options,
