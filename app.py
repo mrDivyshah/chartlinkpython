@@ -5,21 +5,28 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 
 app = Flask(__name__)
+def web_driver():
+    # Specify Chrome binary location
+    chrome_binary_path = "/usr/bin/google-chrome"
 
+    # Chrome options
+    options = webdriver.ChromeOptions()
+    options.binary_location = chrome_binary_path  # Add this line
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--headless")  # Ensure headless mode for Render
+
+    # Setup WebDriver with Service
+    driver = webdriver.Chrome(
+        service=Service(ChromeDriverManager().install()),
+        options=options,
+    )
+    driver.implicitly_wait(10)
+    return driver
 # Helper function to set up the web driver
 def check_chromedriver():
     try:
-        # Path to chromedriver in the cdriver folder
-        chromedriver_path = "./chromedriver.exe"
-        
-        # Chrome options
-        options = Options()
-        options.add_argument("--no-sandbox")
-        options.add_argument("--headless")
-        options.add_argument("--disable-dev-shm-usage")
-        
-        # Set up driver
-        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+        driver = web_driver()
         
         # Test the driver by opening a simple URL
         driver.get("https://www.google.com")

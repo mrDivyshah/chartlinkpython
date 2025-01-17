@@ -1,13 +1,7 @@
 #!/usr/bin/env bash
-
-# Update packages
+# Install Chrome
 apt-get update
-
-# Install Chromium browser and its dependencies
-apt-get install -y chromium chromium-driver
-
-# Verify installation
-echo "Chromium version:"
-chromium --version
-echo "Chromedriver version:"
-chromedriver --version
+apt-get install -y wget unzip
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+dpkg -i google-chrome-stable_current_amd64.deb || apt-get -f install -y
+rm google-chrome-stable_current_amd64.deb
