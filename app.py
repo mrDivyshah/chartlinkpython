@@ -7,7 +7,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 app = Flask(__name__)
 def web_driver():
     # Specify Chrome binary location
-    chrome_binary_path = "/opt/render/project/.render/chrome"
+    chrome_binary_path = "/usr/bin/google-chrome"
     # Chrome options
     options = webdriver.ChromeOptions()
     options.binary_location = chrome_binary_path
