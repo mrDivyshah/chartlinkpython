@@ -1,9 +1,7 @@
- print("Running in Google Colab")
-!pip install selenium
+print("Running in Google Colab")
 !apt-get update
 !apt-get install -y chromium-browser
 !apt-get install chromium chromium-driver
-!pip install webdriver-manager Pillow reportlab
 from flask import Flask, request, jsonify, send_file
 from bs4 import BeautifulSoup
 from selenium import webdriver
