@@ -21,17 +21,22 @@ app = Flask(__name__)
 
 # Helper function to set up the web driver
 def web_driver():
-    options = Options()
-    options.add_argument("--headless")
+    # options to be used
+    options = webdriver.ChromeOptions()
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--disable-gpu")
-    options.add_argument("--disable-setuid-sandbox")
-    options.binary_location = "/usr/bin/chromium"  # Use Chromium installed via render-build.sh
-
-    # Specify the path to the Chromedriver binary
-    service = Service("/usr/bin/chromedriver")
-    driver = webdriver.Chrome(service=service, options=options)
+    options.add_argument("--disable-blink-features=AutomationControlled")
+    options.add_experimental_option("useAutomationExtension", False)
+    options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    options.add_experimental_option("excludeSwitches", ["enable-logging"])
+    options.add_argument("disable-infobars")
+    options.add_argument("--headless")
+    driver = webdriver.Chrome(
+        service=Service(ChromeDriverManager().install()),
+        options=options,
+    )
+    # setup implicit wait
+    driver.implicitly_wait(10)
     return driver
 
 # Function to scrape URLs from the screener page
