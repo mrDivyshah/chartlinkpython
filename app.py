@@ -6,32 +6,21 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 app = Flask(__name__)
 def web_driver():
-    # Specify Chrome binary location
-    chrome_binary_path = "./"
-
-    # Chrome options
     options = webdriver.ChromeOptions()
-    options.binary_location = chrome_binary_path
     options.add_argument("--no-sandbox")  # Required in headless environments
-    options.add_argument("--disable-dev-shm-usage")  # Avoid shared memory issues
     options.add_argument("--headless")  # Run Chrome in headless mode
-    options.add_argument("--disable-gpu")  # Disable GPU to avoid rendering issues
-    options.add_argument("--window-size=1920,1080")  # Set a default window size
-    options.add_argument("--disable-extensions")  # Disable unnecessary extensions
-    options.add_argument("--remote-debugging-port=9222")  # For debugging
 
     driver = webdriver.Chrome(
         service=Service(ChromeDriverManager().install()),
         options=options,
     )
+    
     driver.implicitly_wait(10)
     return driver
-# Helper function to set up the web driver
+
 def check_chromedriver():
     try:
         driver = web_driver()
-        
-        # Test the driver by opening a simple URL
         driver.get("https://www.google.com")
         title = driver.title
         driver.quit()
@@ -46,4 +35,4 @@ def check_driver():
 
 # Run the Flask app
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run()
